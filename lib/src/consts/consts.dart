@@ -1,1 +1,1 @@
-const String hashSalt = "dish";
+const String hashSalt = "food";
