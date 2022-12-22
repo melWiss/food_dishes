@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:food_dishes/src/blocs/authentication.dart';
 import 'package:food_dishes/src/consts/routes.dart';
 import 'package:food_dishes/src/events/authentication.dart';
+import 'package:food_dishes/src/models/account/account.dart';
+import 'package:food_dishes/src/models/dish/dish.dart';
+import 'package:food_dishes/src/models/favorite/favorite.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   await Hive.initFlutter();
+  Hive.registerAdapter(AccountAdapter());
+  Hive.registerAdapter(DishAdapter());
+  Hive.registerAdapter(FavoriteAdapter());
+  Hive.registerAdapter(RoleAdapter());
   runApp(const MyApp());
 }
 

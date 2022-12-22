@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:food_dishes/src/consts/consts.dart';
-import 'package:food_dishes/src/models/account.dart';
+import 'package:food_dishes/src/models/account/account.dart';
 
 import 'package:crypto/crypto.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

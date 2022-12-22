@@ -1,4 +1,4 @@
-import 'package:food_dishes/src/models/account.dart';
+import 'package:food_dishes/src/models/account/account.dart';
 import 'package:rxdart/rxdart.dart';
 import '../services/authentication.dart';
 import '../events/authentication.dart';

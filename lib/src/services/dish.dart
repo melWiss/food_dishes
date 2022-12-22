@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../models/dish.dart';
+import '../models/dish/dish.dart';
 import 'package:hive/hive.dart';
 
 class DishService {

@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:food_dishes/src/blocs/authentication.dart';
-import 'package:food_dishes/src/models/account.dart';
+import 'package:food_dishes/src/models/account/account.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 import 'package:rxdart/rxdart.dart';
-import '../models/favorite.dart';
+import '../models/favorite/favorite.dart';
 import '../services/favorite.dart';
 import '../events/favorite.dart';
 

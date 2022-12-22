@@ -82,9 +82,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             child: event == AuthenticationEvent.loggedOut
                                 ? Text("Sign In")
                                 : Center(
-                                    child: SizedBox(
+                                    child: Container(
                                       height: 50,
                                       width: 50,
+                                      padding: EdgeInsets.all(10),
                                       child: CircularProgressIndicator(),
                                     ),
                                   ),

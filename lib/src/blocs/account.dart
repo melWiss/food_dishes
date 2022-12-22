@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:rxdart/rxdart.dart';
-import '../models/account.dart';
+import '../models/account/account.dart';
 import '../services/account.dart';
 import '../events/account.dart';
 

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../models/account.dart';
+import '../models/account/account.dart';
 import 'package:hive/hive.dart';
 
 class AccountService {

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:rxdart/rxdart.dart';
-import '../models/dish.dart';
+import '../models/dish/dish.dart';
 import '../services/dish.dart';
 import '../events/dish.dart';
 

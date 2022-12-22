@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:food_dishes/src/models/account.dart';
+import 'package:food_dishes/src/models/account/account.dart';
 
-import '../models/favorite.dart';
+import '../models/favorite/favorite.dart';
 import 'package:hive/hive.dart';
 
 class FavoriteService {
