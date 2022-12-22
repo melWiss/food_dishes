@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:food_dishes/src/consts/consts.dart';
 import 'package:food_dishes/src/models/account.dart';
 
-import 'package:bcrypt/bcrypt.dart';
+import 'package:crypto/crypto.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,7 +22,9 @@ class AuthenticationService {
   /// login
   static Future<Account> login(String email, String password) async {
     _box ??= await Hive.openBox<Account>(dbName);
-    String hashedPass = BCrypt.hashpw(password, hashSalt);
+    // String hashedPass = BCrypt.hashpw(password, hashSalt);
+    String hashedPass =
+        String.fromCharCodes(md5.convert(password.codeUnits).bytes);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       Account account = _box!.values.firstWhere((element) =>

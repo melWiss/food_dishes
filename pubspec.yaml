@@ -41,8 +41,9 @@ dependencies:
   rxdart: ^0.27.7
   http: ^0.13.5
   hive_flutter: ^1.1.0
-  bcrypt: ^1.1.3
   go_router: ^6.0.0
+  image_picker: ^0.8.6
+  crypto: ^3.0.2
 
 dev_dependencies:
   flutter_test:
