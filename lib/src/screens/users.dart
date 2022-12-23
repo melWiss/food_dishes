@@ -82,6 +82,11 @@ class UsersListMobile extends StatelessWidget {
     return StreamWidget<AccountEvent>(
       stream: _bloc.stream,
       widget: (context, event) {
+        if (_bloc.state!.isEmpty) {
+          return Center(
+            child: Text("No user has been added."),
+          );
+        }
         return ListView.builder(
           itemCount: _bloc.state!.length,
           padding: EdgeInsets.only(bottom: 80),

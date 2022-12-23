@@ -108,13 +108,22 @@ class DishesListMobile extends StatelessWidget {
     return StreamWidget<DishEvent>(
       stream: _bloc.stream,
       widget: (context, event) {
+        if (_bloc.state!.isEmpty) {
+          return Center(
+            child: Text("No dishes has been added."),
+          );
+        }
         return ListView.builder(
           itemCount: _bloc.state!.length,
           padding: EdgeInsets.only(bottom: 80),
           itemBuilder: (context, index) => Slidable(
             child: ListTile(
               title: Text(_bloc.state![index].title!),
-              subtitle: Text(_bloc.state![index].description!),
+              subtitle: Text(
+                _bloc.state![index].description!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
               leading: Image.file(
                 File(_bloc.state![index].imagePath!),
                 width: 76,
@@ -122,40 +131,58 @@ class DishesListMobile extends StatelessWidget {
               selected: _bloc.state![index].selected &&
                   AuthenticationBloc().state!.role == Role.admin,
               selectedColor: Colors.pink,
-              onTap: () {
-                _bloc.switchSelect(_bloc.state![index]);
-              },
+              onTap: AuthenticationBloc().state!.role == Role.admin
+                  ? () {
+                      _bloc.switchSelect(_bloc.state![index]);
+                    }
+                  : null,
             ),
             endActionPane: ActionPane(
               children: [
-                SlidableAction(
-                  icon: Icons.delete,
-                  label: "Delete",
-                  onPressed: (ctx) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => DeleteDialog(
-                        onDelete: () => _bloc.delete(
-                          _bloc.state![index],
+                if (AuthenticationBloc().state!.role == Role.admin)
+                  SlidableAction(
+                    icon: Icons.delete,
+                    label: "Delete",
+                    onPressed: (ctx) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => DeleteDialog(
+                          onDelete: () => _bloc.delete(
+                            _bloc.state![index],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  backgroundColor: Colors.red,
-                ),
-                SlidableAction(
-                  icon: Icons.edit,
-                  label: "Update",
-                  onPressed: (ctx) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AddDishDialog(
-                        dish: _bloc.state![index],
-                      ),
-                    );
-                  },
-                  backgroundColor: Colors.green,
-                ),
+                      );
+                    },
+                    backgroundColor: Colors.red,
+                  ),
+                if (AuthenticationBloc().state!.role == Role.admin)
+                  SlidableAction(
+                    icon: Icons.edit,
+                    label: "Update",
+                    onPressed: (ctx) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AddDishDialog(
+                          dish: _bloc.state![index],
+                        ),
+                      );
+                    },
+                    backgroundColor: Colors.green,
+                  ),
+                if (AuthenticationBloc().state!.role == Role.user)
+                  SlidableAction(
+                    icon: Icons.favorite,
+                    label: "Like",
+                    onPressed: (ctx) {
+                      FavoriteBloc().add(
+                        Favorite(
+                          user: AuthenticationBloc().state,
+                          dish: _bloc.state![index],
+                        ),
+                      );
+                    },
+                    backgroundColor: Colors.green,
+                  ),
               ],
               motion: ScrollMotion(),
             ),

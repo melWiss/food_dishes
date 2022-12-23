@@ -73,29 +73,6 @@ class _UserScreenState extends State<UserScreen>
       ),
       backgroundColor: Colors.white,
       body: size.width > size.height ? AdminDesktopBody() : AdminMobileBody(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.delete),
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: ((context) => DeleteDialog(
-                  onDelete: () {
-                    switch (indexController.value) {
-                      case 0:
-                        AccountBloc().deleteSelected();
-                        break;
-                      case 1:
-                        DishBloc().deleteSelected();
-                        break;
-                      default:
-                        FavoriteBloc().deleteSelected();
-                    }
-                  },
-                )),
-          );
-        },
-      ),
     );
   }
 }

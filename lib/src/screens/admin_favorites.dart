@@ -30,9 +30,12 @@ class AdminFavoritesListDesktop extends StatelessWidget {
               rows: _bloc.state
                       ?.map<DataRow>(
                         (e) => DataRow(
-                          onSelectChanged: (value) {
-                            _bloc.switchSelect(e);
-                          },
+                          onSelectChanged:
+                              AuthenticationBloc().state!.role == Role.admin
+                                  ? (value) {
+                                      _bloc.switchSelect(e);
+                                    }
+                                  : null,
                           selected: e.selected &&
                               AuthenticationBloc().state!.role == Role.admin,
                           cells: <DataCell>[
@@ -100,6 +103,11 @@ class AdminFavoritesListMobile extends StatelessWidget {
     return StreamWidget<FavoriteEvent>(
       stream: _bloc.stream,
       widget: (context, event) {
+        if (_bloc.state!.isEmpty) {
+          return Center(
+            child: Text("No Favorite items has been added."),
+          );
+        }
         return ListView.builder(
           itemCount: _bloc.state!.length,
           padding: EdgeInsets.only(bottom: 80),
@@ -107,42 +115,58 @@ class AdminFavoritesListMobile extends StatelessWidget {
             child: ListTile(
               title: Text(_bloc.state![index].user!.email!),
               leading: Text(_bloc.state![index].dish!.title!),
-              selected: _bloc.state![index].selected,
+              selected: _bloc.state![index].selected &&
+                  AuthenticationBloc().state!.role == Role.admin,
               selectedColor: Colors.pink,
-              onTap: () {
-                _bloc.switchSelect(_bloc.state![index]);
-              },
+              onTap: AuthenticationBloc().state!.role == Role.admin
+                  ? () {
+                      _bloc.switchSelect(_bloc.state![index]);
+                    }
+                  : null,
             ),
             endActionPane: ActionPane(
               children: [
-                SlidableAction(
-                  icon: Icons.delete,
-                  label: "Delete",
-                  onPressed: (ctx) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => DeleteDialog(
-                        onDelete: () => _bloc.delete(
-                          _bloc.state![index],
+                if (AuthenticationBloc().state!.role == Role.admin)
+                  SlidableAction(
+                    icon: Icons.delete,
+                    label: "Delete",
+                    onPressed: (ctx) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => DeleteDialog(
+                          onDelete: () => _bloc.delete(
+                            _bloc.state![index],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  backgroundColor: Colors.red,
-                ),
-                SlidableAction(
-                  icon: Icons.edit,
-                  label: "Update",
-                  onPressed: (ctx) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AddFavoriteDialog(
-                        favorite: _bloc.state![index],
-                      ),
-                    );
-                  },
-                  backgroundColor: Colors.green,
-                ),
+                      );
+                    },
+                    backgroundColor: Colors.red,
+                  ),
+                if (AuthenticationBloc().state!.role == Role.admin)
+                  SlidableAction(
+                    icon: Icons.edit,
+                    label: "Update",
+                    onPressed: (ctx) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AddFavoriteDialog(
+                          favorite: _bloc.state![index],
+                        ),
+                      );
+                    },
+                    backgroundColor: Colors.green,
+                  ),
+                if (AuthenticationBloc().state!.role == Role.user)
+                  SlidableAction(
+                    icon: Icons.favorite_outline,
+                    label: "Dislike",
+                    onPressed: (ctx) {
+                      FavoriteBloc().delete(
+                        _bloc.state![index],
+                      );
+                    },
+                    backgroundColor: Colors.redAccent,
+                  ),
               ],
               motion: ScrollMotion(),
             ),
