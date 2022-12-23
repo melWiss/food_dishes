@@ -69,6 +69,13 @@ class AccountBloc {
     _controller.add(AccountEvent.loaded);
   }
 
+  /// switch select of account
+  void switchSelect(Account account) {
+    account.selected = !account.selected;
+    print(account);
+    _controller.add(AccountEvent.loaded);
+  }
+
   /// delete an account
   Future<void> delete(Account account) async {
     _controller.add(AccountEvent.deleting);

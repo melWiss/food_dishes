@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:food_dishes/src/other/selected.dart';
 import 'package:hive/hive.dart';
 import '../role/role.dart';
 
 part 'account.g.dart';
 
 @HiveType(typeId: 0)
-class Account extends HiveObject {
+class Account extends HiveObject with SelectedMixin {
   @HiveField(0)
   int? id;
 

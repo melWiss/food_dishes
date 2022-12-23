@@ -93,4 +93,10 @@ class FavoriteBloc {
     }
     _controller.add(FavoriteEvent.loaded);
   }
+
+  /// switch select of Favorite
+  void switchSelect(Favorite favorite) {
+    favorite.selected = !favorite.selected;
+    _controller.add(FavoriteEvent.loaded);
+  }
 }

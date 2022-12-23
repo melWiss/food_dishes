@@ -80,4 +80,10 @@ class DishBloc {
     }
     _controller.add(DishEvent.loaded);
   }
+
+  /// switch select of Dish
+  void switchSelect(Dish dish) {
+    dish.selected = !dish.selected;
+    _controller.add(DishEvent.loaded);
+  }
 }
