@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:food_dishes/src/blocs/authentication.dart';
+import 'package:food_dishes/src/screens/add_dish_dialog.dart';
+import 'package:food_dishes/src/screens/add_favorite_dialog.dart';
+import 'package:food_dishes/src/screens/add_user_dialog.dart';
 import 'package:food_dishes/src/screens/admin_favorites.dart';
 import 'package:food_dishes/src/screens/dishes_list.dart';
 import 'package:food_dishes/src/screens/users.dart';
@@ -87,13 +90,39 @@ class _AdminDesktopBodyState extends State<AdminDesktopBody> {
                         ? SizedBox(
                             width: 250,
                             child: FloatingActionButton.extended(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      switch (index) {
+                                        case 0:
+                                          return AddUserDialog();
+                                        case 1:
+                                          return AddDishDialog();
+                                        default:
+                                          return AddFavoriteDialog();
+                                      }
+                                    });
+                              },
                               icon: Icon(Icons.add),
                               label: Text("Add"),
                             ),
                           )
                         : FloatingActionButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    switch (index) {
+                                      case 0:
+                                        return AddUserDialog();
+                                      case 1:
+                                        return AddDishDialog();
+                                      default:
+                                        return AddFavoriteDialog();
+                                    }
+                                  });
+                            },
                             child: Icon(Icons.add),
                           ),
                     extended: extended,
