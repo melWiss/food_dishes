@@ -26,4 +26,16 @@ class Account extends HiveObject with SelectedMixin {
     this.password,
     this.role,
   });
+
+  @override
+  operator ==(Object other) {
+    if (other is Account) {
+      return id == other.id;
+    }
+    return false;
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => "ACCOUNT#$id".hashCode;
 }

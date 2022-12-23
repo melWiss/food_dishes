@@ -25,4 +25,16 @@ class Dish extends HiveObject with SelectedMixin {
     this.description,
     this.imagePath,
   });
+
+  @override
+  operator ==(Object other) {
+    if (other is Dish) {
+      return id == other.id;
+    }
+    return false;
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => "DISH#$id".hashCode;
 }

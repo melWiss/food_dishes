@@ -23,4 +23,16 @@ class Favorite extends HiveObject with SelectedMixin {
     this.user,
     this.dish,
   });
+
+  @override
+  operator ==(Object other) {
+    if (other is Favorite) {
+      return id == other.id;
+    }
+    return false;
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => "FAVORITE#$id".hashCode;
 }

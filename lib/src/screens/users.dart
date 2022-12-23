@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:food_dishes/src/blocs/account.dart';
 import 'package:food_dishes/src/events/account.dart';
 import 'package:food_dishes/src/models/role/role.dart';
@@ -83,9 +84,44 @@ class UsersListMobile extends StatelessWidget {
       widget: (context, event) {
         return ListView.builder(
           itemCount: _bloc.state!.length,
-          itemBuilder: (context, index) => ListTile(
-            title: Text(_bloc.state![index].email!),
-            leading: Text(_bloc.state![index].id.toString()),
+          itemBuilder: (context, index) => Slidable(
+            child: ListTile(
+              title: Text(_bloc.state![index].email!),
+              leading: Text(_bloc.state![index].id.toString()),
+            ),
+            endActionPane: ActionPane(
+              children: [
+                SlidableAction(
+                  icon: Icons.delete,
+                  label: "Delete",
+                  onPressed: (ctx) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => DeleteDialog(
+                        onDelete: () => _bloc.delete(
+                          _bloc.state![index],
+                        ),
+                      ),
+                    );
+                  },
+                  backgroundColor: Colors.red,
+                ),
+                SlidableAction(
+                  icon: Icons.edit,
+                  label: "Update",
+                  onPressed: (ctx) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AddUserDialog(
+                        account: _bloc.state![index],
+                      ),
+                    );
+                  },
+                  backgroundColor: Colors.green,
+                ),
+              ],
+              motion: ScrollMotion(),
+            ),
           ),
         );
       },
