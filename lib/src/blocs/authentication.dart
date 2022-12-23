@@ -1,3 +1,5 @@
+import 'package:food_dishes/src/blocs/dish.dart';
+import 'package:food_dishes/src/blocs/favorite.dart';
 import 'package:food_dishes/src/models/account/account.dart';
 import 'package:rxdart/rxdart.dart';
 import '../services/authentication.dart';
@@ -53,6 +55,8 @@ class AuthenticationBloc {
     try {
       _state = await AuthenticationService.login(email, password);
       _controller.add(AuthenticationEvent.loggedIn);
+      DishBloc().fetchAll();
+      FavoriteBloc().fetchAll();
     } catch (e) {
       _controller.add(AuthenticationEvent.errorLogin);
       _controller.add(AuthenticationEvent.loggedOut);

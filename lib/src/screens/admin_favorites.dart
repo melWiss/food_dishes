@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:food_dishes/src/blocs/authentication.dart';
 import 'package:food_dishes/src/blocs/dish.dart';
 import 'package:food_dishes/src/blocs/favorite.dart';
 import 'package:food_dishes/src/events/dish.dart';
 import 'package:food_dishes/src/events/favorite.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 import 'package:food_dishes/src/screens/add_favorite_dialog.dart';
 import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
@@ -31,7 +33,8 @@ class AdminFavoritesListDesktop extends StatelessWidget {
                           onSelectChanged: (value) {
                             _bloc.switchSelect(e);
                           },
-                          selected: e.selected,
+                          selected: e.selected &&
+                              AuthenticationBloc().state!.role == Role.admin,
                           cells: <DataCell>[
                             DataCell(Text(e.id.toString())),
                             DataCell(Text(e.user!.email.toString())),
@@ -39,27 +42,41 @@ class AdminFavoritesListDesktop extends StatelessWidget {
                             DataCell(
                               ButtonBar(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AddFavoriteDialog(
-                                          favorite: e,
-                                        ),
-                                      );
-                                    },
-                                    icon: Icon(Icons.edit),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => DeleteDialog(
-                                            onDelete: () => _bloc.delete(e)),
-                                      );
-                                    },
-                                    icon: Icon(Icons.delete),
-                                  ),
+                                  if (AuthenticationBloc().state!.role ==
+                                      Role.admin)
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) =>
+                                              AddFavoriteDialog(
+                                            favorite: e,
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                  if (AuthenticationBloc().state!.role ==
+                                      Role.admin)
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => DeleteDialog(
+                                              onDelete: () => _bloc.delete(e)),
+                                        );
+                                      },
+                                      icon: Icon(Icons.delete),
+                                    ),
+                                  if (AuthenticationBloc().state!.role ==
+                                      Role.user)
+                                    IconButton(
+                                      onPressed: () {
+                                        FavoriteBloc().delete(e);
+                                      },
+                                      icon:
+                                          Icon(Icons.favorite_outline_outlined),
+                                    ),
                                 ],
                               ),
                             ),

@@ -36,8 +36,13 @@ class FavoriteService {
   static Future<Favorite> add(Favorite favorite) async {
     // TODO: [Favorite] api calls here
     _box ??= await Hive.openBox<Favorite>(dbName);
-    favorite.id = await _box!.add(favorite);
-    await _box!.put(favorite.id, favorite);
+    try {
+      _box!.values.firstWhere((element) =>
+          element.user == favorite.user && element.dish == favorite.dish);
+    } catch (e) {
+      favorite.id = await _box!.add(favorite);
+      await _box!.put(favorite.id, favorite);
+    }
     return favorite;
   }
 

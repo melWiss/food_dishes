@@ -5,12 +5,14 @@ import 'package:food_dishes/src/blocs/account.dart';
 import 'package:food_dishes/src/blocs/authentication.dart';
 import 'package:food_dishes/src/blocs/dish.dart';
 import 'package:food_dishes/src/blocs/favorite.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 import 'package:food_dishes/src/screens/add_dish_dialog.dart';
 import 'package:food_dishes/src/screens/add_favorite_dialog.dart';
 import 'package:food_dishes/src/screens/add_user_dialog.dart';
 import 'package:food_dishes/src/screens/admin_favorites.dart';
 import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/screens/dishes_list.dart';
+import 'package:food_dishes/src/screens/logout_dialog.dart';
 import 'package:food_dishes/src/screens/users.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 import 'package:rxdart/rxdart.dart';
@@ -42,7 +44,13 @@ class _UserScreenState extends State<UserScreen>
         actions: [
           if (size.width <= size.height)
             IconButton(
-              onPressed: AuthenticationBloc().logout,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                      LogoutDialog(onLogout: AuthenticationBloc().logout),
+                );
+              },
               icon: Icon(Icons.logout),
             ),
         ],
@@ -113,61 +121,24 @@ class _AdminDesktopBodyState extends State<AdminDesktopBody> {
                 children: [
                   NavigationRail(
                     selectedIndex: index,
-                    leading: extended
-                        ? SizedBox(
-                            width: 250,
-                            child: FloatingActionButton.extended(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      switch (index) {
-                                        case 0:
-                                          return AddUserDialog();
-                                        case 1:
-                                          return AddDishDialog();
-                                        default:
-                                          return AddFavoriteDialog();
-                                      }
-                                    });
-                              },
-                              icon: Icon(Icons.add),
-                              label: Text("Add"),
-                            ),
-                          )
-                        : FloatingActionButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    switch (index) {
-                                      case 0:
-                                        return AddUserDialog();
-                                      case 1:
-                                        return AddDishDialog();
-                                      default:
-                                        return AddFavoriteDialog();
-                                    }
-                                  });
-                            },
-                            child: Icon(Icons.add),
-                          ),
                     extended: extended,
                     onDestinationSelected: (value) =>
                         indexController.add(value),
                     trailing: Container(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height - 320),
+                          top: MediaQuery.of(context).size.height - 220),
                       child: IconButton(
-                        onPressed: AuthenticationBloc().logout,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => LogoutDialog(
+                                onLogout: AuthenticationBloc().logout),
+                          );
+                        },
                         icon: Icon(Icons.logout),
                       ),
                     ),
                     destinations: <NavigationRailDestination>[
-                      NavigationRailDestination(
-                        icon: Icon(Icons.person),
-                        label: Text("Users"),
-                      ),
                       NavigationRailDestination(
                         icon: Icon(Icons.food_bank),
                         label: Text("Dishes"),
@@ -187,7 +158,6 @@ class _AdminDesktopBodyState extends State<AdminDesktopBody> {
                       ),
                       elevation: 8,
                       child: [
-                        UsersListDesktop(),
                         DishesListDesktop(),
                         AdminFavoritesListDesktop(),
                       ][index],
@@ -215,7 +185,6 @@ class AdminMobileBody extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             child: Material(
               child: [
-                UsersListMobile(),
                 DishesListMobile(),
                 AdminFavoritesListMobile(),
               ][index],
@@ -228,32 +197,11 @@ class AdminMobileBody extends StatelessWidget {
               elevation: 8,
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    switch (index) {
-                      case 0:
-                        return AddUserDialog();
-                      case 1:
-                        return AddDishDialog();
-                      default:
-                        return AddFavoriteDialog();
-                    }
-                  });
-            },
-            child: Icon(Icons.add),
-          ),
           bottomNavigationBar: NavigationBar(
             selectedIndex: index,
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             onDestinationSelected: (value) => indexController.add(value),
             destinations: <NavigationDestination>[
-              NavigationDestination(
-                icon: Icon(Icons.person),
-                label: "Users",
-              ),
               NavigationDestination(
                 icon: Icon(Icons.food_bank),
                 label: "Dishes",

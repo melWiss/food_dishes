@@ -2,8 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:food_dishes/src/blocs/authentication.dart';
 import 'package:food_dishes/src/blocs/dish.dart';
+import 'package:food_dishes/src/blocs/favorite.dart';
 import 'package:food_dishes/src/events/dish.dart';
+import 'package:food_dishes/src/models/favorite/favorite.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 import 'package:food_dishes/src/screens/add_dish_dialog.dart';
 import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
@@ -29,10 +33,14 @@ class DishesListDesktop extends StatelessWidget {
               rows: _bloc.state
                       ?.map<DataRow>(
                         (e) => DataRow(
-                          onSelectChanged: (value) {
-                            _bloc.switchSelect(e);
-                          },
-                          selected: e.selected,
+                          onSelectChanged:
+                              AuthenticationBloc().state!.role == Role.admin
+                                  ? (value) {
+                                      _bloc.switchSelect(e);
+                                    }
+                                  : null,
+                          selected: e.selected &&
+                              AuthenticationBloc().state!.role == Role.admin,
                           cells: <DataCell>[
                             DataCell(Text(e.id.toString())),
                             DataCell(Text(e.title.toString())),
@@ -41,27 +49,42 @@ class DishesListDesktop extends StatelessWidget {
                             DataCell(
                               ButtonBar(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AddDishDialog(
+                                  if (AuthenticationBloc().state!.role ==
+                                      Role.admin)
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => AddDishDialog(
+                                            dish: e,
+                                          ),
+                                        );
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                  if (AuthenticationBloc().state!.role ==
+                                      Role.admin)
+                                    IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => DeleteDialog(
+                                              onDelete: () => _bloc.delete(e)),
+                                        );
+                                      },
+                                      icon: Icon(Icons.delete),
+                                    ),
+                                  if (AuthenticationBloc().state!.role ==
+                                      Role.user)
+                                    IconButton(
+                                      onPressed: () {
+                                        FavoriteBloc().add(Favorite(
+                                          user: AuthenticationBloc().state,
                                           dish: e,
-                                        ),
-                                      );
-                                    },
-                                    icon: Icon(Icons.edit),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => DeleteDialog(
-                                            onDelete: () => _bloc.delete(e)),
-                                      );
-                                    },
-                                    icon: Icon(Icons.delete),
-                                  ),
+                                        ));
+                                      },
+                                      icon: Icon(Icons.favorite),
+                                    ),
                                 ],
                               ),
                             ),
@@ -96,7 +119,8 @@ class DishesListMobile extends StatelessWidget {
                 File(_bloc.state![index].imagePath!),
                 width: 76,
               ),
-              selected: _bloc.state![index].selected,
+              selected: _bloc.state![index].selected &&
+                  AuthenticationBloc().state!.role == Role.admin,
               selectedColor: Colors.pink,
               onTap: () {
                 _bloc.switchSelect(_bloc.state![index]);

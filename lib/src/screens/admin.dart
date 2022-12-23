@@ -43,7 +43,13 @@ class _AdminScreenState extends State<AdminScreen>
         actions: [
           if (size.width <= size.height)
             IconButton(
-              onPressed: AuthenticationBloc().logout,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                      LogoutDialog(onLogout: AuthenticationBloc().logout),
+                );
+              },
               icon: Icon(Icons.logout),
             ),
         ],
