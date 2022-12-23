@@ -54,6 +54,5 @@ class AuthenticationService {
     _box ??= await Hive.openBox<Account>(dbName);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    await _box!.clear();
   }
 }

@@ -16,6 +16,20 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  String _errorAuth = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _bloc.stream.listen((event) {
+      if (event == AuthenticationEvent.errorLogin) {
+        _errorAuth = "Email or password are incorrect.";
+      } else if (event == AuthenticationEvent.loggingIn) {
+        _errorAuth = "";
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +104,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     ),
                                   ),
                           ),
+                        ),
+                        Text(
+                          _errorAuth,
+                          style: TextStyle(color: Colors.red),
                         ),
                       ],
                     ),
