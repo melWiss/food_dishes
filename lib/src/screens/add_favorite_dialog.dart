@@ -54,6 +54,7 @@ class _AddFavoriteDialogState extends State<AddFavoriteDialog> {
                         value: e,
                       ))
                   .toList(),
+              isExpanded: true,
               onChanged: (value) {
                 setState(() {
                   _selectedDish = value!;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_dishes/src/blocs/account.dart';
 import 'package:food_dishes/src/models/account/account.dart';
+import 'package:food_dishes/src/models/role/role.dart';
 
 class AddUserDialog extends StatefulWidget {
   const AddUserDialog({super.key});
@@ -13,6 +14,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  Role _selectedRole = Role.user;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -46,6 +48,21 @@ class _AddUserDialogState extends State<AddUserDialog> {
                   }
                 },
               ),
+              DropdownButton<Role>(
+                value: _selectedRole,
+                items: Role.values
+                    .map<DropdownMenuItem<Role>>((e) => DropdownMenuItem<Role>(
+                          child: Text(e.name),
+                          value: e,
+                        ))
+                    .toList(),
+                isExpanded: true,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedRole = value!;
+                  });
+                },
+              ),
             ],
           ),
         ),
@@ -57,6 +74,7 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 AccountBloc().add(Account(
                   email: _emailController.text,
                   password: _passwordController.text,
+                  role: _selectedRole,
                 ));
                 Navigator.of(context)
                     .popUntil((route) => !route.hasActiveRouteBelow);

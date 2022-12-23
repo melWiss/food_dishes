@@ -202,7 +202,20 @@ class AdminMobileBody extends StatelessWidget {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    switch (index) {
+                      case 0:
+                        return AddUserDialog();
+                      case 1:
+                        return AddDishDialog();
+                      default:
+                        return AddFavoriteDialog();
+                    }
+                  });
+            },
             child: Icon(Icons.add),
           ),
           bottomNavigationBar: NavigationBar(
