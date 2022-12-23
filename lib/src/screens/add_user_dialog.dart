@@ -4,7 +4,8 @@ import 'package:food_dishes/src/models/account/account.dart';
 import 'package:food_dishes/src/models/role/role.dart';
 
 class AddUserDialog extends StatefulWidget {
-  const AddUserDialog({super.key});
+  const AddUserDialog({super.key, this.account});
+  final Account? account;
 
   @override
   State<AddUserDialog> createState() => _AddUserDialogState();
@@ -12,13 +13,14 @@ class AddUserDialog extends StatefulWidget {
 
 class _AddUserDialogState extends State<AddUserDialog> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
+  late TextEditingController _emailController =
+      TextEditingController(text: widget.account?.email);
   TextEditingController _passwordController = TextEditingController();
-  Role _selectedRole = Role.user;
+  late Role _selectedRole = widget.account?.role ?? Role.user;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Add user"),
+      title: Text("${widget.account == null ? "Add" : "Update"} user"),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
@@ -71,11 +73,20 @@ class _AddUserDialogState extends State<AddUserDialog> {
         TextButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                AccountBloc().add(Account(
-                  email: _emailController.text,
-                  password: _passwordController.text,
-                  role: _selectedRole,
-                ));
+                if (widget.account == null) {
+                  AccountBloc().add(Account(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    role: _selectedRole,
+                  ));
+                } else {
+                  AccountBloc().update(Account(
+                    id: widget.account!.id,
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                    role: _selectedRole,
+                  ));
+                }
                 Navigator.of(context)
                     .popUntil((route) => !route.hasActiveRouteBelow);
               }

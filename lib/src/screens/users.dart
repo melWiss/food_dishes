@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_dishes/src/blocs/account.dart';
 import 'package:food_dishes/src/events/account.dart';
 import 'package:food_dishes/src/models/role/role.dart';
+import 'package:food_dishes/src/screens/add_user_dialog.dart';
 import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 
@@ -37,7 +38,14 @@ class UsersListDesktop extends StatelessWidget {
                               ButtonBar(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AddUserDialog(
+                                          account: e,
+                                        ),
+                                      );
+                                    },
                                     icon: Icon(Icons.edit),
                                   ),
                                   IconButton(
