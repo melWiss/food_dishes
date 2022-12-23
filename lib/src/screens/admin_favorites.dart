@@ -3,6 +3,7 @@ import 'package:food_dishes/src/blocs/dish.dart';
 import 'package:food_dishes/src/blocs/favorite.dart';
 import 'package:food_dishes/src/events/dish.dart';
 import 'package:food_dishes/src/events/favorite.dart';
+import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 
 class AdminFavoritesListDesktop extends StatelessWidget {
@@ -41,7 +42,13 @@ class AdminFavoritesListDesktop extends StatelessWidget {
                                     icon: Icon(Icons.edit),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => DeleteDialog(
+                                            onDelete: () => _bloc.delete(e)),
+                                      );
+                                    },
                                     icon: Icon(Icons.delete),
                                   ),
                                 ],

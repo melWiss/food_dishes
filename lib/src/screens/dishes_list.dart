@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_dishes/src/blocs/dish.dart';
 import 'package:food_dishes/src/events/dish.dart';
+import 'package:food_dishes/src/screens/add_dish_dialog.dart';
 import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 
@@ -40,7 +41,14 @@ class DishesListDesktop extends StatelessWidget {
                               ButtonBar(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AddDishDialog(
+                                          dish: e,
+                                        ),
+                                      );
+                                    },
                                     icon: Icon(Icons.edit),
                                   ),
                                   IconButton(

@@ -8,7 +8,11 @@ import 'package:food_dishes/src/models/dish/dish.dart';
 import 'package:multi_image_picker_view/multi_image_picker_view.dart';
 
 class AddDishDialog extends StatefulWidget {
-  const AddDishDialog({super.key});
+  const AddDishDialog({
+    super.key,
+    this.dish,
+  });
+  final Dish? dish;
 
   @override
   State<AddDishDialog> createState() => _AddDishDialogState();
@@ -16,9 +20,11 @@ class AddDishDialog extends StatefulWidget {
 
 class _AddDishDialogState extends State<AddDishDialog> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
-  String? _imagePath;
+  late TextEditingController _titleController =
+      TextEditingController(text: widget.dish?.title);
+  late TextEditingController _descriptionController =
+      TextEditingController(text: widget.dish?.description);
+  late String? _imagePath = widget.dish?.imagePath;
   final pickerController = MultiImagePickerController(
       maxImages: 1,
       allowedImageTypes: ['png', 'jpg', 'jpeg'],
@@ -27,7 +33,7 @@ class _AddDishDialogState extends State<AddDishDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Add dish"),
+      title: Text("${widget.dish == null ? "Add" : "Update"} dish"),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
@@ -91,11 +97,20 @@ class _AddDishDialogState extends State<AddDishDialog> {
         TextButton(
             onPressed: () {
               if (_formKey.currentState!.validate() && _imagePath != null) {
-                DishBloc().add(Dish(
-                  title: _titleController.text,
-                  description: _descriptionController.text,
-                  imagePath: _imagePath,
-                ));
+                if (widget.dish == null) {
+                  DishBloc().add(Dish(
+                    title: _titleController.text,
+                    description: _descriptionController.text,
+                    imagePath: _imagePath,
+                  ));
+                } else {
+                  DishBloc().update(Dish(
+                    id: widget.dish!.id,
+                    title: _titleController.text,
+                    description: _descriptionController.text,
+                    imagePath: _imagePath,
+                  ));
+                }
                 Navigator.of(context)
                     .popUntil((route) => !route.hasActiveRouteBelow);
               }
