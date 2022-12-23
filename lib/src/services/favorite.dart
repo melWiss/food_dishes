@@ -56,4 +56,12 @@ class FavoriteService {
     await _box!.delete(favorite.id);
     return favorite;
   }
+
+  /// delete selected Favorites
+  static Future<List<Favorite>> deleteSelected(List<Favorite> favorites) async {
+    // TODO: [Favorite] api calls here
+    _box ??= await Hive.openBox<Favorite>(dbName);
+    await _box!.delete(favorites.map((e) => e.id));
+    return favorites;
+  }
 }

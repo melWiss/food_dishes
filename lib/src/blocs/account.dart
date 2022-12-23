@@ -87,4 +87,17 @@ class AccountBloc {
     }
     _controller.add(AccountEvent.loaded);
   }
+
+  /// delete selected accounts
+  Future<void> deleteSelected() async {
+    _controller.add(AccountEvent.deleting);
+    try {
+      await AccountService.deleteSelected(
+          _state?.where((element) => element.selected).toList() ?? []);
+      await fetchAll();
+    } catch (e) {
+      log("AccountBlocDeleteError", error: e);
+    }
+    _controller.add(AccountEvent.loaded);
+  }
 }

@@ -95,6 +95,11 @@ class DishesListMobile extends StatelessWidget {
                 File(_bloc.state![index].imagePath!),
                 width: 76,
               ),
+              selected: _bloc.state![index].selected,
+              selectedColor: Colors.pink,
+              onTap: () {
+                _bloc.switchSelect(_bloc.state![index]);
+              },
             ),
             endActionPane: ActionPane(
               children: [

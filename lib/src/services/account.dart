@@ -46,4 +46,12 @@ class AccountService {
     await _box!.delete(account.id);
     return account;
   }
+
+  /// delete selected Accounts
+  static Future<List<Account>> deleteSelected(List<Account> accounts) async {
+    // TODO: [Account] api calls here
+    _box ??= await Hive.openBox<Account>(dbName);
+    await _box!.deleteAll(accounts.map((e) => e.id));
+    return accounts;
+  }
 }

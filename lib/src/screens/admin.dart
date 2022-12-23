@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:food_dishes/src/blocs/account.dart';
 import 'package:food_dishes/src/blocs/authentication.dart';
+import 'package:food_dishes/src/blocs/dish.dart';
+import 'package:food_dishes/src/blocs/favorite.dart';
 import 'package:food_dishes/src/screens/add_dish_dialog.dart';
 import 'package:food_dishes/src/screens/add_favorite_dialog.dart';
 import 'package:food_dishes/src/screens/add_user_dialog.dart';
 import 'package:food_dishes/src/screens/admin_favorites.dart';
+import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/screens/dishes_list.dart';
 import 'package:food_dishes/src/screens/users.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
@@ -61,6 +65,29 @@ class _AdminScreenState extends State<AdminScreen>
       ),
       backgroundColor: Colors.white,
       body: size.width > size.height ? AdminDesktopBody() : AdminMobileBody(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.delete),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: ((context) => DeleteDialog(
+                  onDelete: () {
+                    switch (indexController.value) {
+                      case 0:
+                        AccountBloc().deleteSelected();
+                        break;
+                      case 1:
+                        DishBloc().deleteSelected();
+                        break;
+                      default:
+                        FavoriteBloc().deleteSelected();
+                    }
+                  },
+                )),
+          );
+        },
+      ),
     );
   }
 }

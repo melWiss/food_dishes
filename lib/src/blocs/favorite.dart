@@ -52,7 +52,7 @@ class FavoriteBloc {
     _controller.add(FavoriteEvent.loaded);
   }
 
-  /// add account
+  /// add favorite
   Future<void> add(Favorite favorite) async {
     _controller.add(FavoriteEvent.adding);
     try {
@@ -67,7 +67,7 @@ class FavoriteBloc {
     _controller.add(FavoriteEvent.loaded);
   }
 
-  /// update account
+  /// update favorite
   Future<void> update(Favorite favorite) async {
     _controller.add(FavoriteEvent.updating);
     try {
@@ -82,11 +82,28 @@ class FavoriteBloc {
     _controller.add(FavoriteEvent.loaded);
   }
 
-  /// delete an account
+  /// delete an favorite
   Future<void> delete(Favorite favorite) async {
     _controller.add(FavoriteEvent.deleting);
     try {
       await FavoriteService.delete(favorite);
+      await fetchAll();
+    } catch (e) {
+      log("FavoriteBlocDeleteError", error: e);
+    }
+    _controller.add(FavoriteEvent.loaded);
+  }
+
+  /// delete selected favorites
+  Future<void> deleteSelected() async {
+    _controller.add(FavoriteEvent.deleting);
+    try {
+      await FavoriteService.deleteSelected(_state
+              ?.where(
+                (element) => element.selected,
+              )
+              .toList() ??
+          []);
       await fetchAll();
     } catch (e) {
       log("FavoriteBlocDeleteError", error: e);

@@ -81,6 +81,19 @@ class DishBloc {
     _controller.add(DishEvent.loaded);
   }
 
+  /// delete selected accounts
+  Future<void> deleteSelected() async {
+    _controller.add(DishEvent.deleting);
+    try {
+      await DishService.deleteSelected(
+          _state?.where((element) => element.selected).toList() ?? []);
+      await fetchAll();
+    } catch (e) {
+      log("DishBlocDeleteError", error: e);
+    }
+    _controller.add(DishEvent.loaded);
+  }
+
   /// switch select of Dish
   void switchSelect(Dish dish) {
     dish.selected = !dish.selected;

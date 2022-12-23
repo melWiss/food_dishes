@@ -45,4 +45,12 @@ class DishService {
     await _box!.delete(dish.id);
     return dish;
   }
+
+  /// delete selected Dishes
+  static Future<List<Dish>> deleteSelected(List<Dish> dishes) async {
+    // TODO: [Dish] api calls here
+    _box ??= await Hive.openBox<Dish>(dbName);
+    await _box!.deleteAll(dishes.map((e) => e.id));
+    return dishes;
+  }
 }

@@ -89,6 +89,11 @@ class AdminFavoritesListMobile extends StatelessWidget {
             child: ListTile(
               title: Text(_bloc.state![index].user!.email!),
               leading: Text(_bloc.state![index].dish!.title!),
+              selected: _bloc.state![index].selected,
+              selectedColor: Colors.pink,
+              onTap: () {
+                _bloc.switchSelect(_bloc.state![index]);
+              },
             ),
             endActionPane: ActionPane(
               children: [

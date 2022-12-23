@@ -88,6 +88,11 @@ class UsersListMobile extends StatelessWidget {
             child: ListTile(
               title: Text(_bloc.state![index].email!),
               leading: Text(_bloc.state![index].id.toString()),
+              selected: _bloc.state![index].selected,
+              selectedColor: Colors.pink,
+              onTap: () {
+                _bloc.switchSelect(_bloc.state![index]);
+              },
             ),
             endActionPane: ActionPane(
               children: [
