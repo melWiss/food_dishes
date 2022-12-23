@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:food_dishes/src/blocs/dish.dart';
 import 'package:food_dishes/src/events/dish.dart';
+import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 
 class DishesListDesktop extends StatelessWidget {
@@ -43,7 +44,13 @@ class DishesListDesktop extends StatelessWidget {
                                     icon: Icon(Icons.edit),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => DeleteDialog(
+                                            onDelete: () => _bloc.delete(e)),
+                                      );
+                                    },
                                     icon: Icon(Icons.delete),
                                   ),
                                 ],
