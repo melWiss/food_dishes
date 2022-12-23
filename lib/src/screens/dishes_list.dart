@@ -87,6 +87,7 @@ class DishesListMobile extends StatelessWidget {
       widget: (context, event) {
         return ListView.builder(
           itemCount: _bloc.state!.length,
+          padding: EdgeInsets.only(bottom: 80),
           itemBuilder: (context, index) => Slidable(
             child: ListTile(
               title: Text(_bloc.state![index].title!),
