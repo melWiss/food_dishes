@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
+
 import '../models/account/account.dart';
 import 'package:hive/hive.dart';
 
@@ -26,6 +28,8 @@ class AccountService {
   static Future<Account> add(Account account) async {
     // TODO: [Account] api calls here
     _box ??= await Hive.openBox<Account>(dbName);
+    account.password =
+        String.fromCharCodes(md5.convert(account.password!.codeUnits).bytes);
     account.id = await _box!.add(account);
     await _box!.put(account.id, account);
     return account;
@@ -35,6 +39,8 @@ class AccountService {
   static Future<Account> update(Account account) async {
     // TODO: [Account] api calls here
     _box ??= await Hive.openBox<Account>(dbName);
+    account.password =
+        String.fromCharCodes(md5.convert(account.password!.codeUnits).bytes);
     await _box!.put(account.id, account);
     return account;
   }

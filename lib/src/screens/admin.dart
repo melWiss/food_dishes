@@ -11,6 +11,7 @@ import 'package:food_dishes/src/screens/add_user_dialog.dart';
 import 'package:food_dishes/src/screens/admin_favorites.dart';
 import 'package:food_dishes/src/screens/delete_dialog.dart';
 import 'package:food_dishes/src/screens/dishes_list.dart';
+import 'package:food_dishes/src/screens/logout_dialog.dart';
 import 'package:food_dishes/src/screens/users.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
 import 'package:rxdart/rxdart.dart';
@@ -159,7 +160,13 @@ class _AdminDesktopBodyState extends State<AdminDesktopBody> {
                       padding: EdgeInsets.only(
                           top: MediaQuery.of(context).size.height - 320),
                       child: IconButton(
-                        onPressed: AuthenticationBloc().logout,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => LogoutDialog(
+                                onLogout: AuthenticationBloc().logout),
+                          );
+                        },
                         icon: Icon(Icons.logout),
                       ),
                     ),

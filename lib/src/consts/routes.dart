@@ -3,6 +3,7 @@ import 'package:food_dishes/src/events/authentication.dart';
 import 'package:food_dishes/src/models/role/role.dart';
 import 'package:food_dishes/src/screens/admin.dart';
 import 'package:food_dishes/src/screens/authentication.dart';
+import 'package:food_dishes/src/screens/user.dart';
 import 'package:go_router/go_router.dart';
 
 final GoRouter routes = GoRouter(
@@ -18,7 +19,7 @@ final GoRouter routes = GoRouter(
         if (AuthenticationBloc().state!.role == Role.admin) {
           return AdminScreen();
         } else {
-          return AdminScreen();
+          return UserScreen();
         }
       },
     ),

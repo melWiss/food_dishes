@@ -1,7 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:food_dishes/src/blocs/account.dart';
 import 'package:food_dishes/src/blocs/authentication.dart';
+import 'package:food_dishes/src/blocs/dish.dart';
+import 'package:food_dishes/src/blocs/favorite.dart';
 import 'package:food_dishes/src/events/authentication.dart';
+import 'package:food_dishes/src/models/account/account.dart';
+import 'package:food_dishes/src/models/dish/dish.dart';
+import 'package:food_dishes/src/models/favorite/favorite.dart';
+import 'package:food_dishes/src/services/account.dart';
+import 'package:food_dishes/src/services/dish.dart';
+import 'package:food_dishes/src/services/favorite.dart';
 import 'package:food_dishes/src/widgets/stream.dart';
+import 'package:hive/hive.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({super.key});
@@ -118,6 +129,25 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           },
         ),
       ),
+      floatingActionButton: kDebugMode
+          ? FloatingActionButton(
+              child: Icon(Icons.clear),
+              onPressed: () async {
+                // delete all hives boxes
+                var accounts =
+                    await Hive.openBox<Account>(AccountService.dbName);
+                var dishes = await Hive.openBox<Dish>(DishService.dbName);
+                var favorites =
+                    await Hive.openBox<Favorite>(FavoriteService.dbName);
+                await accounts.clear();
+                await dishes.clear();
+                await favorites.clear();
+                AccountBloc().fetchAll();
+                DishBloc().fetchAll();
+                FavoriteBloc().fetchAll();
+              },
+            )
+          : null,
     );
   }
 }

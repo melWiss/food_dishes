@@ -2,19 +2,20 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class DeleteDialog extends StatelessWidget {
-  final Function() onDelete;
-  DeleteDialog({
-    required this.onDelete,
+class LogoutDialog extends StatelessWidget {
+  final Function() onLogout;
+  LogoutDialog({
+    required this.onLogout,
   });
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Are you sure?"),
+      title: Text("Logout"),
+      content: Text("Are you sure? We will miss you."),
       actions: [
         TextButton(
             onPressed: () {
-              onDelete();
+              onLogout();
               Navigator.of(context)
                   .popUntil((route) => !route.hasActiveRouteBelow);
             },
