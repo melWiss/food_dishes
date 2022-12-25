@@ -29,7 +29,7 @@ class _AddFavoriteDialogState extends State<AddFavoriteDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("${widget.favorite == null ? "Add" : "Update"} dish"),
+      title: Text("${widget.favorite == null ? "Add" : "Update"} favorite"),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
